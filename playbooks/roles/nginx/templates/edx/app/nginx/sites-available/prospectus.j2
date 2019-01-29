@@ -4,6 +4,17 @@
   {%- set default_site = "" -%}
 {%- endif -%}
 
+map $uri $cs_whitelist {
+  default 0;
+  "/course/r-basics-2" 1;
+}
+
+map $uri $bz_whitelist {
+  default 0;
+  "/course/accounting-and-finance-0" 1;
+  "/course/introductory-ap-microeconomics" 1;
+}
+
 server {
   # Prospectus configuration file for nginx, templated by ansible
 
@@ -21,9 +32,24 @@ server {
   }
 
   location / {
-    if ($http_x_rollout_group !~ "test") {
+    set $cs_control "0";
+    if ($http_x_rollout_group ~ "cs_control") {
+      set $cs_control "${cs_whitelist}:1";
+    }
+
+    if ($cs_control = "1:1") {
       proxy_pass {{ PROSPECTUS_PROXY_PASS }};
     }
+
+    set $bz_control "0";
+    if ($http_x_rollout_group ~ "bz_control") {
+      set $bz_control "${bz_whitelist}:1";
+    }
+
+    if ($bz_control = "1:1") {
+      proxy_pass {{ PROSPECTUS_PROXY_PASS }};
+    }
+
     try_files $uri $uri/index.html @backend;
   }
 
