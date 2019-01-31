@@ -36,8 +36,8 @@ oauth_client_setup_oauth2_clients:
     - {
         name: "{{ credentials_service_name | default('None') }}",
         url_root: "{{ CREDENTIALS_URL_ROOT | default('None') }}",
-        id: "{{ CREDENTIALS_SOCIAL_AUTH_EDX_OIDC_KEY | default('None') }}",
-        secret: "{{ CREDENTIALS_SOCIAL_AUTH_EDX_OIDC_SECRET | default('None') }}",
+        id: "{{ CREDENTIALS_SOCIAL_AUTH_EDX_OAUTH2_KEY | default('None') }}",
+        secret: "{{ CREDENTIALS_SOCIAL_AUTH_EDX_OAUTH2_SECRET | default('None') }}",
         logout_uri: "{{ CREDENTIALS_LOGOUT_URL | default('None') }}",
         username: "{{ CREDENTIALS_SERVICE_USER_NAME | default('None') }}",
       }
